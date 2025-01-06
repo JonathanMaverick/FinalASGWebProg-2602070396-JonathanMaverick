@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('mobile_number');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->increments('id')->change();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
