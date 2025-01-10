@@ -45,12 +45,11 @@
                 <h5 class="card-title">{{ $user->name }}</h5>
                 <p class="card-text">{{ $user->email }}</p>
                 @if (Auth::check() && Auth::user()->id !== $user->id)
-                  @if (Auth::user()->friends->contains($user) || $user->friends->contains(Auth::user()))
+                  @if (Auth::user()->friends->contains($user))
                     <button class="btn btn-success" disabled>Already Friends</button>
                   @elseif (Auth::user()->sentRequests->contains($user))
                     <button class="btn btn-warning" disabled>Request Sent</button>
-                  @elseif (Auth::user()->receivedRequests->contains($user) &&
-                          $user->receivedRequests->where('user_id', Auth::user()->id)->first()->status === 'pending')
+                  @elseif (Auth::user()->receivedRequests->contains($user))
                     <form action="{{ route('friend.accept', $user->id) }}" method="POST">
                       @csrf
                       <button type="submit" class="btn btn-success">Accept Friend Request</button>

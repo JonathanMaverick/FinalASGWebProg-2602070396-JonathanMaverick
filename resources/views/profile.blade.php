@@ -49,7 +49,6 @@
                   <div class="card-body text-center">
                     <h6 class="card-title">{{ $avatar->name }}</h6>
                     <p class="card-text">Price: ${{ number_format($avatar->price, 2) }}</p>
-                    <!-- Add a button to select the avatar as current profile -->
                     <form action="{{ route('avatar.setProfile', $avatar->id) }}" method="POST">
                       @csrf
                       <button type="submit" class="btn btn-primary">Set as Profile</button>
@@ -71,7 +70,7 @@
             <p>You don't have any friends yet.</p>
           @else
             <div class="row">
-              @foreach (Auth::user()->friends->contains($user) || $user->friends->contains(Auth::user()) as $friend)
+              @foreach ($user->friends as $friend)
                 <div class="col-md-4 mb-4">
                   <div class="card">
                     <img
@@ -80,7 +79,6 @@
                     <div class="card-body">
                       <h5 class="card-title">{{ $friend->name }}</h5>
                       <p class="card-text">{{ $friend->email }}</p>
-                      <a href="{{ route('user.profile', $friend->id) }}" class="btn btn-secondary">View Profile</a>
                     </div>
                   </div>
                 </div>

@@ -17,7 +17,6 @@ class SearchController extends Controller
 
         $query = $request->input('query');
         $users = User::where('name', 'LIKE', '%' . $query . '%')
-            ->orWhere('gender', 'LIKE', '%' . $query . '%')
             ->where('id', '!=', Auth::id())
             ->get();
 
@@ -33,7 +32,6 @@ class SearchController extends Controller
 
         if ($query) {
             $users = User::where('name', 'LIKE', '%' . $query . '%')
-                ->orWhere('gender', 'LIKE', '%' . $query . '%')
                 ->when($selectedHobby, function ($query) use ($selectedHobby) {
                     return $query->whereHas('hobbies', function ($query) use ($selectedHobby) {
                         $query->where('name', $selectedHobby);

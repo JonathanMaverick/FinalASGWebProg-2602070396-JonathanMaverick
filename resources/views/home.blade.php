@@ -67,7 +67,6 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Select all buy buttons that trigger the modal
       const buyButtons = document.querySelectorAll('[data-bs-toggle="modal"]');
 
       buyButtons.forEach(button => {
@@ -78,11 +77,7 @@
 
           document.getElementById('avatar-name').textContent = avatarName;
           document.getElementById('avatar-price').textContent = avatarPrice;
-          document.getElementById('avatar-id').value = avatarId; // Populate hidden input with avatar ID
-
-          console.log('Avatar Name:', avatarName);
-          console.log('Avatar Price:', avatarPrice);
-          console.log('Avatar ID:', avatarId);
+          document.getElementById('avatar-id').value = avatarId;
         });
       });
 

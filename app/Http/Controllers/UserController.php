@@ -38,6 +38,10 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'You have already sent a friend request!');
         }
 
+        if ($user->receivedRequests()->where('user_id', $friendId)->exists()) {
+            return redirect()->back()->with('error', 'Friend request already pending!');
+        }
+
         $user->sentRequests()->attach($friendId, ['status' => 'pending']);
 
         return redirect()->back()->with('success', 'Friend request sent!');
@@ -51,23 +55,21 @@ class UserController extends Controller
             ->where('friend_id', $authUser->id)
             ->first();
 
+        // dd($request);
         if ($request) {
             $request->status = 'accepted';
-            $request->save();
 
+            DB::table('friends')->insert([
+                'user_id' => $authUser->id,
+                'friend_id' => $user->id,
+                'status' => 'accepted',
+            ]);
+
+            $request->save();
             notify()->success('Friend request accepted!');
             return redirect()->back()->with('success', 'Friend request accepted!');
         }
 
         return redirect()->back()->with('error', 'No pending friend request found!');
-    }
-
-    public function removeFriend($friendId)
-    {
-        $user = Auth::user();
-
-        $user->friends()->detach($friendId);
-
-        return redirect()->back()->with('success', 'Friend removed!');
     }
 }
