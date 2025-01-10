@@ -49,8 +49,8 @@ class AvatarController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
-        return redirect()->route('home')->with('success', 'Avatar purchased successfully!');
+        notify()->success('Avatar purchased successfully!');
+        return redirect()->route('home');
     }
 
     public function setProfile($avatarId)

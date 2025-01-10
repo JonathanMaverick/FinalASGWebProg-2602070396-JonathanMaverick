@@ -35,3 +35,9 @@ Route::post('/avatar/purchase', [AvatarController::class, 'purchase'])->name('av
 Route::post('/avatar/setProfile/{avatar}', [AvatarController::class, 'setProfile'])->name('avatar.setProfile');
 
 Route::post('/topup', [UserController::class, 'topUp'])->name('user.topup');
+
+Route::middleware('auth')->group(function () {
+    Route::post('/send-request/{friendId}', [UserController::class, 'sendRequest'])->name('friend.send');
+    Route::post('/friend/accept/{user}', [UserController::class, 'acceptFriend'])->name('friend.accept');
+    Route::post('/remove-friend/{friendId}', [UserController::class, 'removeFriend'])->name('friend.remove');
+});

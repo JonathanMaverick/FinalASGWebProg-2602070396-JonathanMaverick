@@ -42,7 +42,7 @@
             <p>Are you sure you want to purchase this avatar?</p>
             <div class="mb-3">
               <strong>Avatar Name:</strong> <span id="avatar-name"></span><br>
-              <strong>Price:</strong> $<span id="avatar-price"></span>
+              <strong>Price:</strong> Coins<span id="avatar-price"></span>
             </div>
 
             <form id="purchaseForm" method="POST" action="{{ route('avatar.purchase') }}">

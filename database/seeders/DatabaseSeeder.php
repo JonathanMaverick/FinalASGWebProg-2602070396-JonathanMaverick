@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             'gender' => 'Male',
             'instagram' => $faker->userName,
             'mobile_number' => $faker->phoneNumber,
-            'balance' => 1000,
+            'balance' => 99001210,
         ]);
 
         $this->call(HobbySeeder::class);

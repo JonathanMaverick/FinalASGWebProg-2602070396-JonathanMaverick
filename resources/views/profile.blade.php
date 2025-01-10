@@ -27,12 +27,12 @@
                   <h6><strong>Instagram:</strong> <a href="https://instagram.com/{{ $user->instagram }}"
                       target="_blank">{{ $user->instagram }}</a></h6>
                   <h6><strong>Mobile Number:</strong> {{ $user->mobile_number }}</h6>
-                  <h6><strong>Balance:</strong> ${{ number_format($user->balance, 2) }}</h6>
+                  <h6><strong>Balance:</strong> {{ number_format($user->balance) }} Coins</h6>
                   <form action="{{ route('user.topup') }}" method="POST">
-                  @csrf
-                  <button type="submit" class="btn btn-success">
-                    Top Up Balance (+$1000)
-                  </button>
+                    @csrf
+                    <button type="submit" class="btn btn-success">
+                      Top Up Balance (1000 Coins)
+                    </button>
                   </form>
                 </div>
               </div>
@@ -63,6 +63,30 @@
               </div>
             @endforelse
           </div>
+        </div>
+
+        <div class="mt-4">
+          <h5>Your Friends</h5>
+          @if ($user->friends->isEmpty())
+            <p>You don't have any friends yet.</p>
+          @else
+            <div class="row">
+              @foreach (Auth::user()->friends->contains($user) || $user->friends->contains(Auth::user()) as $friend)
+                <div class="col-md-4 mb-4">
+                  <div class="card">
+                    <img
+                      src="{{ $friend->profile_picture ? asset('storage/' . $friend->profile_picture) : 'https://via.placeholder.com/150' }}"
+                      class="card-img-top" alt="Profile Picture">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ $friend->name }}</h5>
+                      <p class="card-text">{{ $friend->email }}</p>
+                      <a href="{{ route('user.profile', $friend->id) }}" class="btn btn-secondary">View Profile</a>
+                    </div>
+                  </div>
+                </div>
+              @endforeach
+            </div>
+          @endif
         </div>
 
       </div>

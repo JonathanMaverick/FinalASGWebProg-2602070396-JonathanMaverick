@@ -40,4 +40,21 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Avatar::class, 'avatar_user', 'user_id', 'avatar_id');
     }
+
+    public function friends()
+    {
+        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')
+            ->withPivot('status')
+            ->wherePivot('status', 'accepted');
+    }
+
+    public function sentRequests()
+    {
+        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')->withPivot('status')->wherePivot('status', 'pending');
+    }
+
+    public function receivedRequests()
+    {
+        return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')->withPivot('status')->wherePivot('status', 'pending');
+    }
 }

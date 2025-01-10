@@ -1,5 +1,7 @@
 @extends('layouts.layout')
 
+@section('title', 'Search')
+
 @section('content')
   <div class="container">
     <h3>Search Results for "{{ $query }}"</h3>
@@ -42,7 +44,25 @@
               <div class="card-body">
                 <h5 class="card-title">{{ $user->name }}</h5>
                 <p class="card-text">{{ $user->email }}</p>
-                <a href="" class="btn btn-primary">Like</a>
+                @if (Auth::check() && Auth::user()->id !== $user->id)
+                  @if (Auth::user()->friends->contains($user) || $user->friends->contains(Auth::user()))
+                    <button class="btn btn-success" disabled>Already Friends</button>
+                  @elseif (Auth::user()->sentRequests->contains($user))
+                    <button class="btn btn-warning" disabled>Request Sent</button>
+                  @elseif (Auth::user()->receivedRequests->contains($user) &&
+                          $user->receivedRequests->where('user_id', Auth::user()->id)->first()->status === 'pending')
+                    <form action="{{ route('friend.accept', $user->id) }}" method="POST">
+                      @csrf
+                      <button type="submit" class="btn btn-success">Accept Friend Request</button>
+                    </form>
+                  @else
+                    <form action="{{ route('friend.send', $user->id) }}" method="POST">
+                      @csrf
+                      <button type="submit" class="btn btn-primary">Send Friend Request</button>
+                    </form>
+                  @endif
+                @endif
+
               </div>
             </div>
           </div>

@@ -16,13 +16,10 @@ class SearchController extends Controller
         ]);
 
         $query = $request->input('query');
-
-        if ($query) {
-            $users = User::where('name', 'LIKE', '%' . $query . '%')
-                ->orWhere('gender', 'LIKE', '%' . $query . '%')
-                ->where('id', '!=', Auth::id())
-                ->get();
-        }
+        $users = User::where('name', 'LIKE', '%' . $query . '%')
+            ->orWhere('gender', 'LIKE', '%' . $query . '%')
+            ->where('id', '!=', Auth::id())
+            ->get();
 
         $hobbies = Hobby::all();
 
@@ -34,14 +31,18 @@ class SearchController extends Controller
         $query = $request->input('query');
         $selectedHobby = $request->input('hobby');
 
-        $users = User::where('name', 'like', '%' . $query . '%')
-            ->when($selectedHobby, function ($query) use ($selectedHobby) {
-                return $query->whereHas('hobbies', function ($query) use ($selectedHobby) {
-                    $query->where('name', $selectedHobby);
-                });
-            })
-            ->where('id', '!=', Auth::id())
-            ->get();
+        if ($query) {
+            $users = User::where('name', 'LIKE', '%' . $query . '%')
+                ->orWhere('gender', 'LIKE', '%' . $query . '%')
+                ->when($selectedHobby, function ($query) use ($selectedHobby) {
+                    return $query->whereHas('hobbies', function ($query) use ($selectedHobby) {
+                        $query->where('name', $selectedHobby);
+                    });
+                })
+                ->get();
+        } else {
+            $users = collect();
+        }
 
         $hobbies = Hobby::all();
 
