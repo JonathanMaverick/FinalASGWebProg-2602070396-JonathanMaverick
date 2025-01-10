@@ -12,6 +12,6 @@ class Hobby extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'user_hobbies', 'hobby_id', 'user_id');
     }
 }

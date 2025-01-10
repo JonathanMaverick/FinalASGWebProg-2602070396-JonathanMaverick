@@ -22,8 +22,10 @@ return new class extends Migration
             $table->string('gender');
             $table->string('instagram');
             $table->string('mobile_number');
+            $table->integer('balance');
             $table->rememberToken();
             $table->timestamps();
+            $table->string('profile_picture')->nullable();
 
             $table->increments('id')->change();
         });
